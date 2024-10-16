@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <string.h>
+
+char symbol, stack[100], infix[100], postfix[100];
+int pos = 0, index = 0, temp, top = -1, length;
+
+// Function prototypes
+void push(char symbol);
+char pop();
+int pred(char symbol);
+void infixToPostfix();
+
+int main() {
+    printf("Enter infix expression: ");
+    scanf("%s", infix);
+    infixToPostfix();
+    postfix[pos] = '\0'; // Null-terminate the postfix string
+    printf("Postfix expression is: %s\n", postfix);
+    return 0;
+}
+
+void infixToPostfix() {
+    length = strlen(infix);
+    push('(');
+    infix[length] = ')'; // Append ')' to the infix expression for processing
+    length++;
+
+    while (index < length) {
+        symbol = infix[index];
+        switch (symbol) {
+            case '(': 
+                push(symbol);
+                break;
+            case ')':
+                temp = pop();
+                while (temp != '(') {
+                    postfix[pos++] = temp;
+                    temp = pop();
+                }
+                break;
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+            case '^':
+                while (top != -1 && pred(stack[top]) >= pred(symbol)) {
+                    temp = pop();
+                    postfix[pos++] = temp;
+                }
+                push(symbol);
+                break;
+            default:
+                postfix[pos++] = symbol; // For operands
+                break;
+        }
+        index++;
+    }
+
+    // Pop remaining operators from the stack
+    while (top != -1) {
+        temp = pop();
+        postfix[pos++] = temp;
+    }
+}
+
+void push(char symbol) {
+    top++;
+    stack[top] = symbol;
+}
+
+char pop() {
+    return stack[top--];
+}
+
+int pred(char symbol) {
+    int p;
+    switch (symbol) {
+        case '^': p = 3; break;
+        case '*':
+        case '/': p = 2; break;
+        case '+':
+        case '-': p = 1; break;
+        default: p = -1; break;
+    }
+    return p;
+}
