@@ -1,0 +1,59 @@
+#include<stdio.h>
+#define size 5
+int q[size],rear=-1,front=-1;
+void insert();
+int delete();
+void display();
+void main()
+{int n;
+do{
+printf("enter the option from 1 to 4,4 to exit,1 to insert,2 to delete and 3 to display ");
+scanf("%d",&n);
+switch(n)
+{
+case 1:insert();
+break;
+case 2:delete();
+break;
+case 3:display();
+break;
+case 4:exit(0);
+default:printf("invalid");
+break;
+}}while(n!=4);
+
+
+}
+void insert()
+{
+int m;
+printf("enter the no to be inserted");
+scanf("%d",&m);
+if(rear==size-1)
+{printf("overflow");}
+else if(front==-1&&rear==-1){
+rear=0;
+front=0;}
+else{rear=rear+1;}
+q[rear]=m;
+}
+int delete ()
+{ int val;
+if(front==-1||rear<front)
+{printf("underflow");}
+else val=q[front];
+front+=1;
+if(front>rear)
+{front=-1;
+rear=-1;}
+return val;
+
+}
+void display()
+{
+if (front==-1||front>rear){
+printf("underflow");
+}else
+for (int i=front;i<=rear;i++)
+{
+printf("ele are %d",q[i]) ;}}
