@@ -1,0 +1,22 @@
+bool hasPathSum(struct TreeNode* root, int targetSum) {
+    
+if (root == NULL) {
+        return false;
+    }
+
+  
+    if (root->left == NULL && root->right == NULL) {
+        return targetSum == root->val;
+    }
+
+    
+    return hasPathSum(root->left, targetSum - root->val) || hasPathSum(root->right, targetSum - root->val);
+}
+
+
+struct TreeNode* createNode(int val) {
+    struct TreeNode* newNode = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    newNode->val = val;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
